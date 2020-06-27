@@ -324,38 +324,38 @@ end
 #
 function quicksort!(
     vetor_entrada::Array{Tuple{Int64,Int64,Int64,Float64}},
-    i::Int64,
-    j::Int64,
+    i::Int64, #será 1, representando a posição inicial do subvetor
+    j::Int64, #será o tamanho do vetor, representando a posição final do subvetor
 )
-    if j > i
-        pivô = vetor_entrada[rand(i:j)] # elemento aleatório do vetor
-        esquerda, direita = i, j
-        while esquerda <= direita
-            while vetor_entrada[esquerda][4] < pivô[4]
-                esquerda += 1
+    if j > i # condição para saber se o array tem mais de 1 só elemento
+        pivô = vetor_entrada[rand(i:j)] # escolha de um elemento aleatório do vetor para ser o pivô
+        esquerda, direita = i, j #atribui às variáveis iteradoras "esquerda" e "direita" as posições do primeiro e último elemento do vetor, para fazerem respectivamente varredura (esq -> dir) e (dir -> esq)
+        while esquerda <= direita #enquanto os índices não se ultrapassarem
+            while vetor_entrada[esquerda][4] < pivô[4] #enquanto o valor da posição [4] do objeto do array onde está a variável "esquerda" for menor que o valor da posição [4] do objeto do pivô 
+                esquerda += 1 #variável "esquerda" avança uma posição para a direita
             end
-            while vetor_entrada[direita][4] > pivô[4]
-                direita -= 1
+            while vetor_entrada[direita][4] > pivô[4] #enquanto o valor da posição [4] do objeto do array onde está a variável "direita" for maior que o valor da posição [4] do objeto do pivô 
+                direita -= 1 #variável "direita" avança uma posição para a esquerda
             end
-            if esquerda <= direita
-                troca_elementos!(vetor_entrada, esquerda, direita)
+            if esquerda <= direita #se os índices não se ultrapassaram (e as duas condição acima foram quebradas) 
+                troca_elementos!(vetor_entrada, esquerda, direita) #troca os elementos
 
-                esquerda += 1
-                direita -= 1
-            end
-        end
-        quicksort!(vetor_entrada, i, direita)
-        quicksort!(vetor_entrada, esquerda, j)
+                esquerda += 1 #variável esqueda continua a avançar
+                direita -= 1 #variável direita continua a avançar
+                end 
+            end #final do partition
+        quicksort!(vetor_entrada, i, direita) #recorrencia da função para a o subvetor a direita do pivô
+        quicksort!(vetor_entrada, esquerda, j) #recorrencia da função para a o subvetor a esquerda do pivô
     end
 
-    return vetor_entrada
+    return vetor_entrada #retorna o vetor ordenado
 end
 
 
 
 function quicksort(vetor_entrada::Array{Tuple{Int64,Int64,Int64,Float64}})
 
-    A = copy(vetor_entrada)
+    A = copy(vetor_entrada) #faz uma cópia do array
 
     return quicksort!(A, 1, length(A))
 end
